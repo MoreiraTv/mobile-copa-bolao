@@ -7,7 +7,6 @@ import { Option } from "../components/Option";
 import { Header } from "../components/Header";
 import { Loading } from "../components/Loading";
 import { Guesses } from "../components/Guesses";
-import { Ranking } from "../components/Ranking";
 import { api } from "../services/api";
 import { PoolCard, PoolCardProps } from "../components/PoolCard";
 import { PoolHeader } from "../components/PoolHeader";
@@ -17,7 +16,7 @@ interface RouteParams {
   id: "string";
 }
 
-export function Details() {
+export function DetailsParticipant() {
   const [optionSelected, setOptionSelected] = useState<"guesses" | "ranking">(
     "guesses"
   );
@@ -89,11 +88,7 @@ export function Details() {
               onPress={() => setOptionSelected("ranking")}
             />
           </HStack>
-          {optionSelected === "guesses" ? (
-            <Guesses poolId={pollDetails.id} code={pollDetails.code} />
-          ) : (
-            <Ranking poolId={pollDetails.id}/>
-          )}
+          <Guesses poolId={pollDetails.id} code={pollDetails.code} />
         </VStack>
       ) : (
         <EmptyMyPoolList code={pollDetails.code} />

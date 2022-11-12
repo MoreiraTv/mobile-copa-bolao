@@ -13,7 +13,7 @@ import { PoolCard, PoolCardProps } from '../components/PoolCard';
 import { EmptyPoolList } from '../components/EmptyPoolList';
 
 
-export function Pools() {
+export function Results() {
     const [isLoading, setIsLoading] = useState(true);
     const [poll, setPoll] = useState<PoolCardProps[]>([]);
 
@@ -48,12 +48,12 @@ export function Pools() {
 
     return (
         <VStack flex={1} bgColor='gray.900'>
-            <Header title="Meus Bolões" 
+            <Header title="Resultados dos jogos" 
             showBackButton={false} showShareButton={false}
             onShare={() => {}} />
             <VStack mt={6} mx={5} borderBottomWidth={1} borderBottomColor='gray.600' pb={4} mb={4}>
                 <Button
-                    title='BUSCAR BOLÃO POR CÓDIGO'
+                    title='BUSCAR JOGO'
                     leftIcon={<Icon as={Octicons} name='search' color='blac' size='md' />}
                     onPress={() => navigate('Find')}
                 />
