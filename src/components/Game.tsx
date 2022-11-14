@@ -2,7 +2,7 @@ import { Button, HStack, Text, useTheme, VStack } from 'native-base';
 import { X, Check } from 'phosphor-react-native';
 import { getName } from 'country-list';
 import dayjs from 'dayjs';
-import ptBr from 'dayjs/locale/pt-br'
+import 'dayjs/locale/pt-br';
 
 import { Team } from './Team';
 
@@ -20,6 +20,8 @@ export interface GameProps {
   date: string;
   firstTeamCountryCode: string;
   secoundTeamCountryCode: string;
+  firstTeamCountryNamePt: string;
+  secoundTeamCountryNamePt: string;
   guess: null | GuessProps;
 };
 
@@ -32,8 +34,13 @@ interface Props {
 
 export function Game({ data, setFirstTeamPoints, setSecoundTeamPoints, onGuessConfirm }: Props) {
   const { colors, sizes } = useTheme();
-  
-  const when = dayjs(data.date).locale(ptBr).format('DD [de] MMMM [de] YYYY [ás] HH:00[h]');
+  // const dataBR = data.date.toLocaleString('pt-BR');
+  const when = dayjs(data.date).locale('pt-br').format('DD [de] MMMM [de] YYYY [ás] HH:00[h]');
+
+  if(data.guess !== null){
+    data.guess.firstTeamPoints
+    data.guess.secoundTeamPoints
+  }
 
   return (
     <VStack
@@ -47,7 +54,11 @@ export function Game({ data, setFirstTeamPoints, setSecoundTeamPoints, onGuessCo
       p={4}
     >
       <Text color="gray.100" fontFamily="heading" fontSize="sm">
-        {getName(data.firstTeamCountryCode)} vs. {getName(data.secoundTeamCountryCode)}
+        {
+          getName(data.firstTeamCountryCode)
+        } vs. {
+          getName(data.secoundTeamCountryCode)
+        }
       </Text>
 
       <Text color="gray.200" fontSize="xs">
@@ -59,6 +70,7 @@ export function Game({ data, setFirstTeamPoints, setSecoundTeamPoints, onGuessCo
           code={data.firstTeamCountryCode}
           position="right"
           onChangeText={setFirstTeamPoints}
+          value={data.guess !== null ? data.guess.firstTeamPoints : null}
         />
 
         <X color={colors.gray[300]} size={sizes[6]} />
@@ -67,6 +79,7 @@ export function Game({ data, setFirstTeamPoints, setSecoundTeamPoints, onGuessCo
           code={data.secoundTeamCountryCode}
           position="left"
           onChangeText={setSecoundTeamPoints}
+          value={data.guess !== null ? data.guess.secoundTeamPoints : null}
         />
       </HStack>
 

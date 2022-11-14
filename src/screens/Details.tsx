@@ -1,4 +1,4 @@
-import { HStack, useToast, VStack } from "native-base";
+import { HStack, Text, useToast, VStack } from "native-base";
 import { Share } from "react-native";
 import { useState, useEffect } from "react";
 import { useRoute } from "@react-navigation/native";
@@ -18,7 +18,7 @@ interface RouteParams {
 }
 
 export function Details() {
-  const [optionSelected, setOptionSelected] = useState<"guesses" | "ranking">(
+  const [optionSelected, setOptionSelected] = useState<"guesses" | "ranking" | "config">(
     "guesses"
   );
   const [isLoading, setIsLoading] = useState(true);
@@ -57,7 +57,7 @@ export function Details() {
 
   useEffect(() => {
     fetchPollDetails();
-  }, []);
+  }, [id]);
 
   if (isLoading) {
     return <Loading />;
@@ -66,7 +66,7 @@ export function Details() {
   return (
     <VStack flex={1} bgColor="gray.900">
       <Header
-        title="Titulo do bolão"
+        title={pollDetails.title}
         showBackButton
         showShareButton
         onShare={handleCodeShare}
@@ -88,11 +88,21 @@ export function Details() {
               isSelected={optionSelected === "ranking"}
               onPress={() => setOptionSelected("ranking")}
             />
+            
+            <Option
+              title="Configuração"
+              isSelected={optionSelected === "config"}
+              onPress={() => setOptionSelected("config")}
+            />
           </HStack>
           {optionSelected === "guesses" ? (
             <Guesses poolId={pollDetails.id} code={pollDetails.code} />
-          ) : (
+          ) : optionSelected === "ranking" ? (
             <Ranking poolId={pollDetails.id}/>
+          ) : (
+            <Text>
+              Configuração
+            </Text>
           )}
         </VStack>
       ) : (

@@ -17,7 +17,7 @@ export function Guesses({ poolId, code }: Props) {
   const [games, setGames] = useState<GameProps[]>([]);
   const [firstTeamPoints, setFirstTeamPoints] = useState("");
   const [secoundTeamPoints, setSecoundTeamPoints] = useState("");
-
+  console.log(poolId)
   const toast = useToast();
 
   async function fetchGames() {
@@ -42,7 +42,7 @@ export function Guesses({ poolId, code }: Props) {
 
   async function handleGuessConfirm(gameId: string) {
     try {
-      console.log(firstTeamPoints, secoundTeamPoints)
+      setIsLoading(true);
       if (!firstTeamPoints.trim() || !secoundTeamPoints.trim()) {
         return toast.show({
           title: "Informe o placar do palpite!",
@@ -68,6 +68,9 @@ export function Guesses({ poolId, code }: Props) {
         placement: "top",
         bgColor: "red.500",
       });
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -75,8 +78,8 @@ export function Guesses({ poolId, code }: Props) {
     fetchGames();
   }, [poolId]);
 
-  if(isLoading){
-    return <Loading />
+  if (isLoading) {
+    return <Loading />;
   }
 
   return (
@@ -92,8 +95,8 @@ export function Guesses({ poolId, code }: Props) {
             onGuessConfirm={() => handleGuessConfirm(item.id)}
           />
         )}
-        _contentContainerStyle={{pb:10}}
-        ListEmptyComponent={() => <EmptyMyPoolList code={code}/>}
+        _contentContainerStyle={{ pb: 20 }}
+        ListEmptyComponent={() => <EmptyMyPoolList code={code} />}
       />
     </>
   );

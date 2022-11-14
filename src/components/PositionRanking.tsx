@@ -52,7 +52,7 @@ export function PositionRanking({ data, position }) {
           </VStack>
         </HStack>
 
-        <VStack bgColor="yellow.500" p={2} alignItems="center" rounded="xl">
+        <VStack bgColor="yellow.500" px={3} py={1} alignItems="center" rounded="xl">
           <Text fontFamily="heading" color="gray.950" fontSize="xs">
             {position}º
           </Text>
