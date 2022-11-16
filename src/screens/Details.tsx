@@ -1,7 +1,8 @@
-import { HStack, Text, useToast, VStack } from "native-base";
+import { HStack, useToast, VStack } from "native-base";
+import { useNavigation } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import { Share } from "react-native";
 import { useState, useEffect } from "react";
-import { useRoute } from "@react-navigation/native";
 
 import { Option } from "../components/Option";
 import { Header } from "../components/Header";
@@ -12,22 +13,23 @@ import { api } from "../services/api";
 import { PoolCard, PoolCardProps } from "../components/PoolCard";
 import { PoolHeader } from "../components/PoolHeader";
 import { EmptyMyPoolList } from "../components/EmptyMyPoolList";
+import { ConfigPool } from "../components/ConfigPool";
 
 interface RouteParams {
   id: "string";
 }
 
 export function Details() {
-  const [optionSelected, setOptionSelected] = useState<"guesses" | "ranking" | "config">(
-    "guesses"
-  );
+  const [optionSelected, setOptionSelected] = useState<
+    "guesses" | "ranking" | "config"
+  >("guesses");
   const [isLoading, setIsLoading] = useState(true);
   const [pollDetails, setPollDetails] = useState<PoolCardProps>(
     {} as PoolCardProps
   );
-
   const route = useRoute();
   const toast = useToast();
+
   const { id } = route.params as RouteParams;
 
   async function fetchPollDetails() {
@@ -88,7 +90,7 @@ export function Details() {
               isSelected={optionSelected === "ranking"}
               onPress={() => setOptionSelected("ranking")}
             />
-            
+
             <Option
               title="Configuração"
               isSelected={optionSelected === "config"}
@@ -98,11 +100,9 @@ export function Details() {
           {optionSelected === "guesses" ? (
             <Guesses poolId={pollDetails.id} code={pollDetails.code} />
           ) : optionSelected === "ranking" ? (
-            <Ranking poolId={pollDetails.id}/>
+            <Ranking poolId={pollDetails.id} />
           ) : (
-            <Text>
-              Configuração
-            </Text>
+            <ConfigPool poolId={pollDetails.id} code={pollDetails.code}/>
           )}
         </VStack>
       ) : (

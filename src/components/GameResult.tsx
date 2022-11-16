@@ -11,8 +11,8 @@ interface GuessProps {
   gameId: string;
   createdAt: string;
   participantId: string;
-  firstTeamPoints: number;
-  secoundTeamPoints: number;
+  resultFirstTeam: number;
+  resultSecoundTeam: number;
 }
 
 export interface GameProps {
@@ -28,18 +28,18 @@ export interface GameProps {
 interface Props {
   data: GameProps;
   onGuessConfirm: () => void;
-  setFirstTeamPoints: (value: string) => void;
-  setSecoundTeamPoints: (value: string) => void;
+  setResultFirstTeam: (value: string) => void;
+  setResultSecoundTeam: (value: string) => void;
 };
 
-export function Game({ data, setFirstTeamPoints, setSecoundTeamPoints, onGuessConfirm }: Props) {
+export function GameResult({ data, setResultFirstTeam, setResultSecoundTeam, onGuessConfirm }: Props) {
   const { colors, sizes } = useTheme();
   // const dataBR = data.date.toLocaleString('pt-BR');
   const when = dayjs(data.date).locale('pt-br').format('DD [de] MMMM [de] YYYY [ás] HH:00[h]');
 
-  if(data.guess !== null){
-    data.guess.firstTeamPoints
-    data.guess.secoundTeamPoints
+  if(data.resultFirstTeam !== null){
+    data.resultFirstTeam
+    data.resultSecoundTeam
   }
 
   return (
@@ -69,8 +69,8 @@ export function Game({ data, setFirstTeamPoints, setSecoundTeamPoints, onGuessCo
         <Team
           code={data.firstTeamCountryCode}
           position="right"
-          onChangeText={setFirstTeamPoints}
-          value={data.guess !== null ? data.guess.firstTeamPoints : null}
+          onChangeText={setResultFirstTeam}
+          value={data.resultFirstTeam !== null ? data.resultFirstTeam : null}
         />
 
         <X color={colors.gray[300]} size={sizes[6]} />
@@ -78,17 +78,17 @@ export function Game({ data, setFirstTeamPoints, setSecoundTeamPoints, onGuessCo
         <Team
           code={data.secoundTeamCountryCode}
           position="left"
-          onChangeText={setSecoundTeamPoints}
-          value={data.guess !== null ? data.guess.secoundTeamPoints : null}
+          onChangeText={setResultSecoundTeam}
+          value={data.resultSecoundTeam !== null ? data.resultSecoundTeam : null}
         />
       </HStack>
 
       {
-        !data.guess &&
+        !data.resultFirstTeam &&
         <Button size="xs" w="full" bgColor="green.500" mt={4} onPress={onGuessConfirm}>
           <HStack alignItems="center">
             <Text color="white" fontSize="xs" fontFamily="heading" mr={3}>
-              CONFIRMAR PALPITE
+              CONFIRMAR RESULTADO
             </Text>
 
             <Check color={colors.white} size={sizes[4]} />
