@@ -18,12 +18,20 @@ import { ConfigPool } from "../components/ConfigPool";
 interface RouteParams {
   id: "string";
 }
+interface IsMeProps {
+  name: String;
+  avatarUrl: String;
+  sub: String;
+  iat: number;
+  exp: number;
+}
 
 export function Details() {
   const [optionSelected, setOptionSelected] = useState<
     "guesses" | "ranking" | "config"
   >("guesses");
   const [isLoading, setIsLoading] = useState(true);
+  const [isMe, setIsMe] = useState<IsMeProps>({} as IsMeProps);
   const [pollDetails, setPollDetails] = useState<PoolCardProps>(
     {} as PoolCardProps
   );
@@ -38,7 +46,8 @@ export function Details() {
 
       const response = await api.get(`/pools/${id}`);
       setPollDetails(response.data.pool);
-      // console.log(response.data.pool);
+      const responseIsMe = await api.get(`/me`);
+      setIsMe(responseIsMe.data.user);
     } catch (error) {
       console.log(error);
       toast.show({
@@ -91,18 +100,24 @@ export function Details() {
               onPress={() => setOptionSelected("ranking")}
             />
 
-            <Option
-              title="Configuração"
-              isSelected={optionSelected === "config"}
-              onPress={() => setOptionSelected("config")}
-            />
+            {pollDetails.ownerId === isMe.sub ? (
+              <Option
+                title="Configuração"
+                isSelected={optionSelected === "config"}
+                onPress={() => setOptionSelected("config")}
+              />
+            ) : (
+              <></>
+            )}
           </HStack>
           {optionSelected === "guesses" ? (
             <Guesses poolId={pollDetails.id} code={pollDetails.code} />
           ) : optionSelected === "ranking" ? (
             <Ranking poolId={pollDetails.id} />
+          ) : pollDetails.ownerId === isMe.sub ? (
+            <ConfigPool poolId={pollDetails.id} />
           ) : (
-            <ConfigPool poolId={pollDetails.id} code={pollDetails.code}/>
+            <></>
           )}
         </VStack>
       ) : (

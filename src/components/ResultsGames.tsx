@@ -4,15 +4,10 @@ import { useToast, FlatList } from "native-base";
 import { api } from "../services/api";
 
 import { Loading } from "./Loading";
-import { EmptyMyPoolList } from "./EmptyMyPoolList";
 import { GameResult, GameProps } from "./GameResult";
 
-interface Props {
-  poolId: string;
-  code: string;
-}
 
-export function ResultsGames({ poolId, code }: Props) {
+export function ResultsGames() {
   const [isLoading, setIsLoading] = useState(true);
   const [games, setGames] = useState<GameProps[]>([]);
   const [resultFirstTeam, setResultFirstTeam] = useState("");
@@ -23,7 +18,7 @@ export function ResultsGames({ poolId, code }: Props) {
     try {
       setIsLoading(true);
 
-      const response = await api.get(`/pools/${poolId}/games`);
+      const response = await api.get(`/games`);
 
       setGames(response.data.games);
     } catch (error) {
@@ -33,6 +28,7 @@ export function ResultsGames({ poolId, code }: Props) {
         placement: "top",
         bgColor: "red.500",
       });
+      setIsLoading(false);
     } finally {
       setIsLoading(false);
     }
@@ -49,7 +45,7 @@ export function ResultsGames({ poolId, code }: Props) {
         });
       }
 
-      await api.post(`/pools/${poolId}/games/${gameId}/result`, {
+      await api.post(`/games/${gameId}/result`, {
         resultFirstTeam: Number(resultFirstTeam),
         resultSecoundTeam: Number(resultSecoundTeam),
       });
@@ -74,7 +70,7 @@ export function ResultsGames({ poolId, code }: Props) {
 
   useEffect(() => {
     fetchGames();
-  }, [poolId]);
+  }, []);
 
   if (isLoading) {
     return <Loading />;
@@ -90,11 +86,10 @@ export function ResultsGames({ poolId, code }: Props) {
             data={item}
             setResultFirstTeam={setResultFirstTeam}
             setResultSecoundTeam={setResultSecoundTeam}
-            onGuessConfirm={() => handleResultConfirm(item.id)}
+            onResultConfirm={() => handleResultConfirm(item.id)}
           />
         )}
         _contentContainerStyle={{ pb: 20 }}
-        ListEmptyComponent={() => <EmptyMyPoolList code={code} />}
       />
     </>
   );

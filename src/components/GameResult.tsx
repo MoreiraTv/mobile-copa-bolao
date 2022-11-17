@@ -1,10 +1,13 @@
-import { Button, HStack, Text, useTheme, VStack } from 'native-base';
+import { Button, HStack, Text, useTheme, VStack, useToast } from 'native-base';
+import { useState, useEffect } from "react";
 import { X, Check } from 'phosphor-react-native';
 import { getName } from 'country-list';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
 
 import { Team } from './Team';
+import { api } from '../services/api';
+import { Loading } from './Loading';
 
 interface GuessProps {
   id: string;
@@ -27,19 +30,56 @@ export interface GameProps {
 
 interface Props {
   data: GameProps;
-  onGuessConfirm: () => void;
+  onResultConfirm: () => void;
   setResultFirstTeam: (value: string) => void;
   setResultSecoundTeam: (value: string) => void;
 };
 
-export function GameResult({ data, setResultFirstTeam, setResultSecoundTeam, onGuessConfirm }: Props) {
+interface IsMeProps {
+  name: String;
+  avatarUrl: String;
+  sub: String;
+  iat: number;
+  exp: number;
+}
+
+export function GameResult({ data, setResultFirstTeam, setResultSecoundTeam, onResultConfirm }: Props) {
+  const [isMe, setIsMe] = useState<IsMeProps>({} as IsMeProps);
+  const [isLoading, setIsLoading] = useState(true);
   const { colors, sizes } = useTheme();
+  const toast = useToast();
   // const dataBR = data.date.toLocaleString('pt-BR');
   const when = dayjs(data.date).locale('pt-br').format('DD [de] MMMM [de] YYYY [ás] HH:00[h]');
 
   if(data.resultFirstTeam !== null){
     data.resultFirstTeam
     data.resultSecoundTeam
+  }
+
+  async function fetchIsMe() {
+    try {
+      setIsLoading(true);
+
+      const responseIsMe = await api.get(`/me`);
+      setIsMe(responseIsMe.data.user);
+    } catch (error) {
+      console.log(error);
+      toast.show({
+        title: "Não foi possivel carregar os detalhes do usuario!",
+        placement: "top",
+        bgColor: "red.500",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchIsMe();
+  }, []);
+
+  if (isLoading) {
+    return <Loading />;
   }
 
   return (
@@ -84,8 +124,8 @@ export function GameResult({ data, setResultFirstTeam, setResultSecoundTeam, onG
       </HStack>
 
       {
-        !data.resultFirstTeam &&
-        <Button size="xs" w="full" bgColor="green.500" mt={4} onPress={onGuessConfirm}>
+        !data.resultFirstTeam && isMe.sub == "cla4eejvb0000tm1ge17c8xj4" &&
+        <Button size="xs" w="full" bgColor="green.500" mt={4} onPress={onResultConfirm}>
           <HStack alignItems="center">
             <Text color="white" fontSize="xs" fontFamily="heading" mr={3}>
               CONFIRMAR RESULTADO

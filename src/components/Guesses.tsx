@@ -17,7 +17,7 @@ export function Guesses({ poolId, code }: Props) {
   const [games, setGames] = useState<GameProps[]>([]);
   const [firstTeamPoints, setFirstTeamPoints] = useState("");
   const [secoundTeamPoints, setSecoundTeamPoints] = useState("");
-  console.log(poolId)
+  // console.log(poolId)
   const toast = useToast();
 
   async function fetchGames() {
