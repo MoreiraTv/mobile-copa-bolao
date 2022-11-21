@@ -30,9 +30,9 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
 
     const [request, response, promptAsync] = Google.useAuthRequest({
         clientId: process.env.CLIENT_ID,
-        redirectUri: AuthSession.makeRedirectUri({ useProxy: true }),
-        scopes: ['profile', 'email']
-    })
+        scopes: ['profile', 'email'],
+        redirectUri: AuthSession.makeRedirectUri({useProxy: true }),
+    },{useProxy: true })
 
     async function signIn() {
         try {
@@ -53,7 +53,7 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
 
             const tokenResponse = await api.post('/users', { access_token });
             api.defaults.headers.common['Authorization'] = `Bearer ${tokenResponse.data.token}`;
-            // console.log(tokenResponse.data.token);
+            console.log(tokenResponse.data.token);
 
             const userInfoResponse = await api.get('/me');
             setUser(userInfoResponse.data.user);

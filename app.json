@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "mobileCopa",
-    "slug": "mobileCopa",
-    "scheme": "mobileCopa",
+    "name": "mobilecopa",
+    "slug": "mobilecopa",
+    "scheme": "mobilecopa",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -24,11 +24,17 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+        "backgroundColor": "#000"
+      },
+      "package": "com.moreiratv.mobileCopa"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a0853dee-4836-4432-93e7-37b6a814f1ec"
+      }
     }
   }
 }

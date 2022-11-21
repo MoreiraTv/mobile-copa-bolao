@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useToast } from "native-base";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { PlusCircle, SoccerBall } from "phosphor-react-native";
+import { PlusCircle, SoccerBall, Trophy } from "phosphor-react-native";
 import { useTheme } from "native-base";
 import { Platform } from "react-native";
 
@@ -105,15 +105,14 @@ export function AppRoutes() {
         }}
       />
 
-      {isMe.sub === "cla4eejvb0000tm1ge17c8xj4" && (
-        <Screen
-          name="Results"
-          component={Results}
-        //   options={{
-        //     tabBarButton: () => null,
-        //   }}
-        />
-      )}
+      <Screen
+        name="Results"
+        component={Results}
+        options={{
+          tabBarIcon: ({ color }) => <Trophy color={color} size={size} />,
+          tabBarLabel: "Resultados",
+        }}
+      />
     </Navigator>
   );
 }

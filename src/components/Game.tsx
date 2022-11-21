@@ -1,10 +1,10 @@
-import { Button, HStack, Text, useTheme, VStack } from 'native-base';
-import { X, Check } from 'phosphor-react-native';
-import { getName } from 'country-list';
-import dayjs from 'dayjs';
-import 'dayjs/locale/pt-br';
+import { Button, HStack, Text, useTheme, VStack } from "native-base";
+import { X, Check } from "phosphor-react-native";
+import { getName } from "country-list";
+import dayjs from "dayjs";
+import "dayjs/locale/pt-br";
 
-import { Team } from './Team';
+import { Team } from "./Team";
 
 interface GuessProps {
   id: string;
@@ -23,23 +23,30 @@ export interface GameProps {
   resultFirstTeam: number;
   resultSecoundTeam: number;
   guess: null | GuessProps;
-};
+}
 
 interface Props {
   data: GameProps;
   onGuessConfirm: () => void;
   setFirstTeamPoints: (value: string) => void;
   setSecoundTeamPoints: (value: string) => void;
-};
+}
 
-export function Game({ data, setFirstTeamPoints, setSecoundTeamPoints, onGuessConfirm }: Props) {
+export function Game({
+  data,
+  setFirstTeamPoints,
+  setSecoundTeamPoints,
+  onGuessConfirm,
+}: Props) {
   const { colors, sizes } = useTheme();
   // const dataBR = data.date.toLocaleString('pt-BR');
-  const when = dayjs(data.date).locale('pt-br').format('DD [de] MMMM [de] YYYY [ás] HH:00[h]');
+  const when = dayjs(data.date)
+    .locale("pt-br")
+    .format("DD [de] MMMM [de] YYYY [ás] HH:00[h]");
 
-  if(data.guess !== null){
-    data.guess.firstTeamPoints
-    data.guess.secoundTeamPoints
+  if (data.guess !== null) {
+    data.guess.firstTeamPoints;
+    data.guess.secoundTeamPoints;
   }
 
   return (
@@ -54,18 +61,20 @@ export function Game({ data, setFirstTeamPoints, setSecoundTeamPoints, onGuessCo
       p={4}
     >
       <Text color="gray.100" fontFamily="heading" fontSize="sm">
-        {
-          getName(data.firstTeamCountryCode)
-        } vs. {
-          getName(data.secoundTeamCountryCode)
-        }
+        {getName(data.firstTeamCountryCode)} vs.{" "}
+        {getName(data.secoundTeamCountryCode)}
       </Text>
 
       <Text color="gray.200" fontSize="xs">
         {when}
       </Text>
 
-      <HStack mt={4} w="full" justifyContent="space-between" alignItems="center">
+      <HStack
+        mt={4}
+        w="full"
+        justifyContent="space-between"
+        alignItems="center"
+      >
         <Team
           code={data.firstTeamCountryCode}
           position="right"
@@ -83,18 +92,29 @@ export function Game({ data, setFirstTeamPoints, setSecoundTeamPoints, onGuessCo
         />
       </HStack>
 
-      {
-        !data.guess &&
-        <Button size="xs" w="full" bgColor="green.500" mt={4} onPress={onGuessConfirm}>
-          <HStack alignItems="center">
-            <Text color="white" fontSize="xs" fontFamily="heading" mr={3}>
-              CONFIRMAR PALPITE
-            </Text>
+      {new Date(data.date) > new Date(Date.now()) ? (
+        !data.guess && (
+          <Button
+            size="xs"
+            w="full"
+            bgColor="green.500"
+            mt={4}
+            onPress={onGuessConfirm}
+          >
+            <HStack alignItems="center">
+              <Text color="white" fontSize="xs" fontFamily="heading" mr={3}>
+                CONFIRMAR PALPITE
+              </Text>
 
-            <Check color={colors.white} size={sizes[4]} />
-          </HStack>
-        </Button>
-      }
+              <Check color={colors.white} size={sizes[4]} />
+            </HStack>
+          </Button>
+        )
+      ) : (
+        <>
+          <Text color="gray.200" fontSize="sm">Tempo para palpite esgotado!</Text>
+        </>
+      )}
     </VStack>
   );
 }
