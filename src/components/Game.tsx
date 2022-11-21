@@ -1,6 +1,6 @@
 import { Button, HStack, Text, useTheme, VStack } from "native-base";
 import { X, Check } from "phosphor-react-native";
-import { getName } from "country-list";
+import { getName } from "country-list-pt";
 import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
 
