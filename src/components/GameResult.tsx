@@ -124,7 +124,7 @@ export function GameResult({ data, setResultFirstTeam, setResultSecoundTeam, onR
       </HStack>
 
       {
-        !data.resultFirstTeam && isMe.sub == "cla4eejvb0000tm1ge17c8xj4" &&
+        data.resultFirstTeam == null && isMe.sub == "cla4eejvb0000tm1ge17c8xj4" &&
         <Button size="xs" w="full" bgColor="green.500" mt={4} onPress={onResultConfirm}>
           <HStack alignItems="center">
             <Text color="white" fontSize="xs" fontFamily="heading" mr={3}>

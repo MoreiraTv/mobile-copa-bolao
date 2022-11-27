@@ -10,14 +10,19 @@
     "preview": {
       "env": {
         "CLIENT_ID": "697470759634-eahr5ks5d100dgd0crrm91185i926vrt.apps.googleusercontent.com",
-        "BASE_URL": "https://bolao-da-copa-m.herokuapp.com/"
+        "BASE_URL": "http://mcodec.com.br:21055/"
       },
       "android": {
         "buildType": "apk"
       },
       "distribution": "internal"
     },
-    "production": {}
+    "production": {
+      "env": {
+        "CLIENT_ID": "697470759634-eahr5ks5d100dgd0crrm91185i926vrt.apps.googleusercontent.com",
+        "BASE_URL": "http://mcodec.com.br:21055/"
+      }
+    }
   },
   "submit": {
     "production": {}
